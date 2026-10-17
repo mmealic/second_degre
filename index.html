@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Second degré : problèmes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B2A41;--muted:#56657C;--acc:#2F5BD3;--ok:#1C7C45;--okbg:#E5F4EA;--ko:#B4441A;--kobg:#FBEAE2;--info:#E8EEFC;--line:#D5DEE8;--warnbg:#FFF4D6;--sc:#2F5BD3;--sct:#E8EEFC}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:'Lexend',system-ui,sans-serif;color:var(--ink);font-size:16px;line-height:1.55;background:#F2F6FA;background-image:linear-gradient(#E3EAF2 1px,transparent 1px),linear-gradient(90deg,#E3EAF2 1px,transparent 1px);background-size:24px 24px}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3,.brand,.et{font-family:'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.01em}
+h1{font-size:28px;font-weight:800;line-height:1.15;margin:6px 0}h2{font-size:22px;font-weight:800;margin:4px 0 8px}h3{font-size:18px;margin:16px 0 6px}
+p{margin:7px 0}b{font-weight:600}
+.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+.top .in{max-width:800px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.brand{font-weight:800;cursor:pointer;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wrap{max-width:800px;margin:0 auto;padding:16px 16px 70px;overflow-x:hidden}
+.btn{border:1px solid var(--sc);background:var(--sc);color:#fff;border-radius:12px;padding:8px 15px;cursor:pointer;min-height:40px;font-weight:500;box-shadow:0 2px 0 rgba(27,42,65,.18)}
+.btn:active{transform:translateY(1px);box-shadow:none}.btn.out{background:#fff;color:var(--sc)}.btn.sm{padding:4px 11px;min-height:34px;font-size:14px}
+.btn:disabled{opacity:.45;cursor:default}
+.qbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;cursor:pointer;font-size:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.hero{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.tag{display:inline-block;background:#FFE7A3;color:#5A3D00;border-radius:999px;padding:2px 11px;font-size:13px;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:12px}
+.sec{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;transition:transform .15s,box-shadow .15s}
+.sec:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(27,42,65,.1);border-color:var(--sc)}
+.sec .n{font-size:13px;color:var(--sc);font-weight:600}.sec .t{font-family:'Bricolage Grotesque';font-weight:800;font-size:18px;line-height:1.2}.sec .s{font-size:14px;color:var(--muted)}
+.bar{height:7px;background:#E6EBF1;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--sc)}
+.back{background:none;border:0;color:var(--sc);cursor:pointer;padding:4px 0}
+.shead{background:var(--sct);border-radius:16px;padding:14px 16px;margin:6px 0 10px}
+.shead h2{margin:0}
+.method{background:#fff;border:1px dashed var(--sc);border-radius:14px;padding:12px 14px;margin:10px 0}
+.method summary{cursor:pointer;font-weight:600;color:var(--sc)}
+.method ol{margin:6px 0 0 18px;padding:0}.method li{margin:3px 0}
+.exlist{display:flex;flex-direction:column;gap:8px}
+.exitem{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;text-align:left}
+.exitem:hover{border-color:var(--sc)}.exitem .st{font-size:13px;color:var(--muted);white-space:nowrap}
+.ctx{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:10px 0}
+.step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.step.done{border-color:#B9DCC6}
+.step .sn{font-size:13px;color:var(--sc);font-weight:600;margin-bottom:4px}
+.step .q{margin-bottom:8px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.num{width:110px;padding:8px 9px;border:1px solid var(--line);border-radius:10px;font-size:16px}
+.num.ok{border-color:var(--ok);background:var(--okbg)}.num.ko{border-color:var(--ko);background:var(--kobg)}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer}
+.opt:hover{border-color:var(--sc)}.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.ko{border-color:var(--ko);background:var(--kobg)}
+.fb{border-radius:10px;padding:9px 12px;margin-top:8px;font-size:15px}
+.fb.ok{background:var(--okbg);color:#0F4D2A}.fb.ko{background:var(--kobg);color:#6B2408}.fb.info{background:var(--info)}.fb.warn{background:var(--warnbg);color:#4A3500}
+.sol{background:#F5F8FC;border-left:0;border-radius:10px;padding:10px 12px;margin-top:8px;font-size:15px}
+.sol .h{font-weight:600;color:var(--ok);margin-bottom:2px}
+textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:10px;padding:9px;font-size:15px}
+.check label{display:flex;gap:8px;align-items:flex-start;margin:4px 0;font-size:15px}
+.small{font-size:14px}.muted{color:var(--muted)}
+.svgbox{display:flex;justify-content:center}.svgbox svg{max-width:100%;height:auto}
+.formula{background:var(--sct);border-radius:12px;padding:10px 14px;margin:10px 0;text-align:center}
+/* tableaux */
+.tabw{overflow-x:auto;margin:8px 0}
+.sgn,.vtab{border-collapse:collapse;margin:6px auto;font-size:16px;border:1.6px solid var(--ink);background:#fff}
+.sgn th,.vtab th{border-right:1.6px solid var(--ink);padding:4px 8px;font-weight:600;white-space:nowrap}
+.sgn tr+tr td,.sgn tr+tr th,.vtab tr+tr td,.vtab tr+tr th{border-top:1.6px solid var(--ink)}
+.sgn td,.vtab td{text-align:center;min-width:22px;height:40px;padding:2px 2px}
+.sgn td.xv,.vtab td.xv{font-weight:600;white-space:nowrap;min-width:30px}
+.sgn td.bar{position:relative}.sgn tr+tr td.bar::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:1.5px dashed #56657C}
+.sgn td.bar span,.sgn td.bar .zb{position:relative}
+.sgn td.bar span{background:#fff;font-weight:700}
+.sgn td.sg{min-width:40px;font-weight:700;font-size:18px}
+.sb{width:36px;height:32px;border:2px dashed var(--line);border-radius:8px;background:#fff;font-size:19px;font-weight:700;cursor:pointer}
+.zb{width:24px;height:28px;border:2px dashed var(--line);border-radius:6px;background:#fff;font-size:16px;font-weight:700;cursor:pointer;padding:0}
+.ab{width:34px;height:54px;border:2px dashed var(--line);border-radius:8px;background:#fff;cursor:pointer;padding:0;display:inline-flex;align-items:center;justify-content:center;color:var(--acc);font-weight:700;font-size:18px}
+.sb.f,.zb.f,.ab.f{border-style:solid;border-color:var(--acc)}
+.sb.ok,.zb.ok,.ab.ok{border-color:var(--ok);background:var(--okbg)}.sb.ko,.zb.ko,.ab.ko{border-color:var(--ko);background:var(--kobg)}
+.vtab td.vv{height:96px;min-width:34px}.vtab td.vv>div{height:90px;display:flex;flex-direction:column;justify-content:center;align-items:center;font-weight:700}
+.vtab td.vv.vtop>div{justify-content:flex-start}.vtab td.vv.vbot>div{justify-content:flex-end}
+.vtab td.ar{min-width:34px;color:var(--acc)}
+.cin{width:52px;padding:5px 3px;border:2px solid var(--line);border-radius:8px;text-align:center;font-size:15px}
+.cin.ok{border-color:var(--ok);background:var(--okbg)}.cin.ko{border-color:var(--ko);background:var(--kobg)}
+.rbars{display:grid;grid-template-columns:minmax(110px,1fr) 2fr auto;gap:8px 10px;align-items:center;font-size:15px}
+.rbars .bar{height:12px}.rbars .bar i.g{background:var(--ok)}
+.notes{position:fixed;right:14px;bottom:14px;z-index:30}
+.notepanel{position:fixed;right:14px;bottom:64px;width:min(360px,calc(100vw - 28px));background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:0 10px 30px rgba(27,42,65,.18);z-index:31}
+#errpop{position:fixed;inset:0;background:rgba(27,42,65,.5);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px}#errpop[hidden]{display:none}
+.pop{background:#fff;border-radius:18px;max-width:460px;width:100%;padding:18px;border-top:6px solid var(--ko);max-height:86vh;overflow:auto;box-shadow:0 20px 50px rgba(27,42,65,.3)}
+.pop .ph{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:21px;color:var(--ko)}
+.pop .pg{background:#F5F8FC;border-radius:10px;padding:8px 11px;margin:10px 0}.pop .pm{margin:10px 0}.pop .pm ul{padding-left:20px;margin:4px 0}.pop .pm li{margin:6px 0}
+.pop .pr{background:var(--info);border-radius:10px;padding:8px 11px;font-size:15px;margin:10px 0}
+.step .sn.think{color:#B45309}
+.qplot{margin:8px 0}
+@media print{.top,.notes,.btn{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="top"><div class="in"><div class="brand" id="brand">Second degré : problèmes</div><button class="qbtn" id="topQ">Mes questions</button></div></div>
+<div class="wrap" id="app"></div>
+<div class="notes"><button class="btn" id="noteBtn">Je ne comprends pas</button></div>
+<div class="notepanel" id="notePanel" hidden></div>
+<script>
+/* ================= RÉGLAGES (à modifier) ================= */
+const STUDENT_NAME = "";        // prénom de l'élève (vide = il le tape lui-même)
+const TUTOR_EMAIL  = "amina.mentoring@protonmail.com";        // adresse qui reçoit le bilan
+const TUTOR_CODE   = "1234";    // code de l'espace mentor
+/* ========================================================== */
+const KEY = "second-degre-problemes";
+let S = {name:STUDENT_NAME, res:{}, notes:[], page:'home', axis:0, tabErr:0};
+try{ const s = JSON.parse(localStorage.getItem(KEY)); if(s) S = Object.assign(S, s); }catch(e){}
+let TUTOR = false;
+const UI = {};   // état d'affichage non sauvegardé
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+const $ = (s,r=document)=>r.querySelector(s), $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function parseNum(s){ if(s==null) return NaN; s=String(s).trim().replace(/[\s  ]/g,'').replace(/,/g,'.').replace(/−/g,'-');
+  if(!/^[-+]?(\d+\.?\d*|\.\d+)$/.test(s)) return NaN; return parseFloat(s); }
+const near = (x,a,tol) => Math.abs(x-a) <= (tol ?? 1e-9 + Math.abs(a)*1e-9);
+const nf = v => (typeof v==='number' ? String(Math.round(v*1000)/1000).replace('.',',').replace('-','−') : v);
+
+/* ---------- graphique ---------- */
+function plot(o){
+  const P = Object.assign({xmin:0,xmax:10,ymin:0,ymax:10,xstep:1,ystep:1,xlab:1,ylab:1,w:360,h:260,xt:'x',yt:'y',fns:[],dots:[],hl:[],vl:[]}, o);
+  const pl=34,pr=16,pt=18,pb=26, W=P.w, H=P.h;
+  const sx=x=>pl+(x-P.xmin)/(P.xmax-P.xmin)*(W-pl-pr), sy=y=>H-pb-(y-P.ymin)/(P.ymax-P.ymin)*(H-pt-pb);
+  let g='';
+  for(let x=Math.ceil(P.xmin/P.xstep)*P.xstep; x<=P.xmax+1e-9; x+=P.xstep) g+=`<line x1="${sx(x)}" y1="${pt}" x2="${sx(x)}" y2="${H-pb}" stroke="#E1E8F0"/>`;
+  for(let y=Math.ceil(P.ymin/P.ystep)*P.ystep; y<=P.ymax+1e-9; y+=P.ystep) g+=`<line x1="${pl}" y1="${sy(y)}" x2="${W-pr}" y2="${sy(y)}" stroke="#E1E8F0"/>`;
+  const ax = sx(Math.max(P.xmin,Math.min(0,P.xmax))), ay = sy(Math.max(P.ymin,Math.min(0,P.ymax)));
+  g+=`<line x1="${pl-3}" y1="${ay}" x2="${W-pr+6}" y2="${ay}" stroke="#1B2A41" stroke-width="1.5"/><path d="M${W-pr+7} ${ay} l-7 -3.5 v7z" fill="#1B2A41"/>`;
+  g+=`<line x1="${ax}" y1="${H-pb+3}" x2="${ax}" y2="${pt-7}" stroke="#1B2A41" stroke-width="1.5"/><path d="M${ax} ${pt-8} l-3.5 7 h7z" fill="#1B2A41"/>`;
+  for(let x=Math.ceil(P.xmin/P.xlab)*P.xlab; x<=P.xmax+1e-9; x+=P.xlab) if(Math.abs(x)>1e-9) g+=`<text x="${sx(x)}" y="${ay+14}" font-size="10.5" text-anchor="middle" fill="#334155">${nf(x)}</text>`;
+  for(let y=Math.ceil(P.ymin/P.ylab)*P.ylab; y<=P.ymax+1e-9; y+=P.ylab) if(Math.abs(y)>1e-9) g+=`<text x="${ax-4}" y="${sy(y)+3.5}" font-size="10.5" text-anchor="end" fill="#334155">${nf(y)}</text>`;
+  g+=`<text x="${ax-4}" y="${ay+14}" font-size="10.5" text-anchor="end" fill="#334155">0</text>`;
+  g+=`<text x="${W-pr}" y="${ay-6}" font-size="11.5" font-style="italic" text-anchor="end" fill="#1B2A41">${P.xt}</text><text x="${ax+6}" y="${pt-3}" font-size="11.5" font-style="italic" fill="#1B2A41">${P.yt}</text>`;
+  P.hl.forEach(([y,c])=>g+=`<line x1="${pl}" y1="${sy(y)}" x2="${W-pr}" y2="${sy(y)}" stroke="${c||'#B4441A'}" stroke-width="1.6" stroke-dasharray="6 4"/>`);
+  P.fns.forEach(fn=>{ let d='',pen=false; const a=fn.from??P.xmin,b=fn.to??P.xmax;
+    for(let i=0;i<=300;i++){ const x=a+(b-a)*i/300, y=fn.f(x); if(!isFinite(y)||y<P.ymin-2||y>P.ymax+2){pen=false;continue}
+      d+=(pen?'L':'M')+sx(x).toFixed(1)+' '+sy(y).toFixed(1)+' '; pen=true; }
+    g+=`<path d="${d}" fill="none" stroke="${fn.c||'#2F5BD3'}" stroke-width="2.6" stroke-linecap="round"/>`; });
+  P.dots.forEach(([x,y,l])=>g+=`<circle cx="${sx(x)}" cy="${sy(y)}" r="4" fill="#1B2A41"/>`+(l?`<text x="${sx(x)+6}" y="${sy(y)-7}" font-size="11" font-weight="600" fill="#1B2A41">${l}</text>`:''));
+  return `<div class="svgbox"><svg viewBox="0 0 ${W} ${H}" width="${W}" role="img" aria-label="graphique">${g}</svg></div>`;
+}
+
+/* ---------- tableaux (statique) ---------- */
+const UP=`<svg viewBox="0 0 40 60" width="26" height="42" aria-label="croissante"><line x1="5" y1="54" x2="33" y2="9" stroke="currentColor" stroke-width="2.6"/><path d="M34 7 L31.8 19 L25 14.6 Z" fill="currentColor"/></svg>`;
+const DN=`<svg viewBox="0 0 40 60" width="26" height="42" aria-label="décroissante"><line x1="5" y1="6" x2="33" y2="51" stroke="currentColor" stroke-width="2.6"/><path d="M34 53 L25 45.4 L31.8 41 Z" fill="currentColor"/></svg>`;
+function sgnTable(xs, rows){ // rows [{h, cells:[...]}], cells even = bar content, odd = sign
+  const K=2*xs.length-1; let h=`<div class="tabw"><table class="sgn"><tr><th>x</th>`;
+  for(let k=0;k<K;k++) h+= k%2===0?`<td class="xv">${xs[k/2]}</td>`:`<td></td>`;
+  h+='</tr>'; rows.forEach(r=>{ h+=`<tr><th>${r.h}</th>`; for(let k=0;k<K;k++){ const end=k===0||k===K-1;
+    h+= k%2===0?`<td class="${end?'':'bar'}">${r.cells[k]||''}</td>`:`<td class="sg">${r.cells[k]||''}</td>`; } h+='</tr>'; });
+  return h+'</table></div>';
+}
+function vpos(arrows,n){ return Array.from({length:n},(_,i)=>{ const u=(i>0&&arrows[i-1]==='up')||(i<n-1&&arrows[i]==='down'), d=(i>0&&arrows[i-1]==='down')||(i<n-1&&arrows[i]==='up'); return u&&!d?'vtop':d&&!u?'vbot':'mid'; }); }
+function varTable(xs, arrowCells, valCells, pos, fname, v){
+  const K=2*xs.length-1; let h=`<div class="tabw"><table class="vtab"><tr><th>${v||'x'}</th>`;
+  for(let k=0;k<K;k++) h+= k%2===0?`<td class="xv">${xs[k/2]}</td>`:`<td></td>`;
+  h+=`</tr><tr><th>${fname||'f'}</th>`;
+  for(let k=0;k<K;k++) h+= k%2===0?`<td class="vv ${pos[k/2]}"><div>${valCells[k/2]??''}</div></td>`:`<td class="ar">${arrowCells[(k-1)/2]}</td>`;
+  return h+'</tr></table></div>';
+}
+const vstatic = (xs,arrows,vals,f) => varTable(xs.map(nf), arrows.map(a=>a==='up'?UP:DN), vals.map(v=>v==null?'':nf(v)), vpos(arrows,xs.length), f);
+const sstatic = (xs,rows) => sgnTable(xs.map(nf), rows.map(r=>({h:r.h, cells:r.s.map((v,k)=>k%2?String(v).replace('-','−'):(v&&v!=='|'?`<span>${v}</span>`:''))})));
+
+/* ---------- navigation ---------- */
+function go(p){ S.page=p; save(); render(); window.scrollTo(0,0); }
+function exRec(id){ return S.res[id] = S.res[id] || {i:0, st:{}, tries:1}; }
+function allEx(){ return SECTIONS.flatMap(s=>s.ex.map(e=>Object.assign({sec:s.id},e))); }
+function exStats(ex){ const r=S.res[ex.id]; const n=ex.steps.length; if(!r) return {done:0,n,first:0,tried:0};
+  let done=0,first=0,tried=0; ex.steps.forEach((st,k)=>{ const x=r.st[k]; if(!x) return; if(x.done) done++; if(st.t!=='redac'&&x.tried){tried++; if(x.first) first++;} }); return {done,n,first,tried}; }
+function render(){
+  $('#brand').onclick=()=>go('home');
+  $('#topQ').onclick=()=>toggleNotes(true);
+  $('#noteBtn').onclick=()=>toggleNotes();
+  const app=$('#app');
+  if(S.page==='home') return home(app);
+  if(S.page==='bilan') return bilan(app);
+  const sec=SECTIONS.find(s=>s.id===S.page); if(sec) return SECTIONS.length===1?home(app):section(app,sec);
+  const ex=allEx().find(e=>e.id===S.page); if(ex) return exercise(app,ex);
+  S.page='home'; home(app);
+}
+function home(app){
+  const sec=SECTIONS[0];
+  document.documentElement.style.setProperty('--sc',sec.c[0]); document.documentElement.style.setProperty('--sct',sec.c[1]);
+  app.innerHTML=`<div class="hero"><span class="tag">Première · spécialité mathématiques</span>
+    <h1>Second degré : des problèmes jusqu'au bout</h1>
+    <div class="row" style="margin:8px 0"><label for="nm">Prénom :</label><input id="nm" class="num" style="width:190px" value="${esc(S.name||'')}"></div>
+</div>
+    ${sec.method?`<details class="method"><summary>Rappel de méthode</summary>${sec.method}</details>`:''}
+    <h2 style="margin-top:18px">Les problèmes</h2>
+    <div class="exlist">${sec.ex.map((e,i)=>{const st=exStats(e);return `<button class="exitem" data-ex="${e.id}"><span><b>${i+1}. ${e.title}</b>${e.sub?`<br><span class="small muted">${e.sub}</span>`:''}</span><span class="st">${st.done===st.n?'terminé':st.done+' / '+st.n}</span></button>`}).join('')}
+    <button class="exitem" data-ex="bilan" style="border-style:dashed"><span><b>Mon bilan</b><br><span class="small muted">Ce qui est acquis, ce qu'il faut revoir, mes questions</span></span><span class="st">→</span></button></div>`;
+  $('#nm').onchange=e=>{S.name=e.target.value.trim();save();};
+  $$('[data-ex]').forEach(b=>b.onclick=()=>go(b.dataset.ex));
+}
+function section(app,sec){
+  document.documentElement.style.setProperty('--sc',sec.c[0]); document.documentElement.style.setProperty('--sct',sec.c[1]);
+  app.innerHTML=`<button class="back" id="bk">← Sommaire</button><div class="shead"><div class="small" style="color:var(--sc);font-weight:600">Partie ${SECTIONS.indexOf(sec)+1}</div><h2>${sec.title}</h2></div>
+    ${sec.method?`<details class="method" open><summary>Rappel de méthode</summary>${sec.method}</details>`:''}
+    <div class="exlist">${sec.ex.map((e,i)=>{const st=exStats(e);return `<button class="exitem" data-ex="${e.id}"><span><b>${i+1}. ${e.title}</b>${e.sub?`<br><span class="small muted">${e.sub}</span>`:''}</span><span class="st">${st.done===st.n?'terminé':st.done+' / '+st.n}</span></button>`}).join('')}</div>`;
+  $('#bk').onclick=()=>go('home');
+  $$('[data-ex]').forEach(b=>b.onclick=()=>go(b.dataset.ex));
+}
+
+/* ---------- exercice ---------- */
+function exercise(app,ex){
+  const sec=SECTIONS.find(s=>s.id===ex.sec);
+  document.documentElement.style.setProperty('--sc',sec.c[0]); document.documentElement.style.setProperty('--sct',sec.c[1]);
+  const R=exRec(ex.id), idx=sec.ex.findIndex(e=>e.id===ex.id), next=sec.ex[idx+1];
+  const finished = R.i>=ex.steps.length;
+  app.innerHTML=`<button class="back" id="bk">← ${SECTIONS.length===1?'Tous les problèmes':sec.title}</button>
+    <h2>${idx+1}. ${ex.title}</h2>
+    ${ex.ctx?`<div class="ctx">${typeof ex.ctx==='function'?ex.ctx():ex.ctx}</div>`:''}
+    <div id="steps"></div>
+    ${finished?`<div class="fb ok">Exercice terminé${R.tries>1?` (${R.tries}ᵉ fois)`:''}. ${exStats(ex).first} / ${ex.steps.filter(s=>s.t!=='redac').length} étapes réussies du premier coup.</div>`:''}
+    <div class="row" style="margin-top:14px;justify-content:space-between"><button class="btn out sm" id="redo">Refaire sans aide</button>${next?`<button class="btn" id="nx">Exercice suivant →</button>`:`<button class="btn" id="bk2">Retour à la partie</button>`}</div>`;
+  $('#bk').onclick=()=>go(sec.id);
+  const nx=$('#nx'); if(nx) nx.onclick=()=>go(next.id);
+  const bk2=$('#bk2'); if(bk2) bk2.onclick=()=>go(sec.id);
+  $('#redo').onclick=()=>{ const t=(R.tries||1)+1; S.res[ex.id]={i:0,st:{},tries:t,noHint:true}; Object.keys(UI).filter(k=>k.startsWith(ex.id+':')).forEach(k=>delete UI[k]); save(); exercise(app,ex); };
+  const box=$('#steps');
+  ex.steps.forEach((st,k)=>{ if(k>R.i) return; const d=document.createElement('div'); d.className='step'; box.appendChild(d); renderStep(d,ex,k,st,R,()=>{ if(R.i===k){ R.i=k+1; save(); } exercise(app,ex); setTimeout(()=>{ const el=$$('.step')[k+1]; if(el) el.scrollIntoView({behavior:'smooth',block:'center'}); },60); }); });
+}
+
+function renderStep(el,ex,k,st,R,onDone){
+  const rec = R.st[k] = R.st[k] || {};
+  const U = UI[ex.id+':'+k] = UI[ex.id+':'+k] || {tries:0};
+  const done = rec.done;
+  el.classList.toggle('done',!!done);
+  el.innerHTML=`<div class="sn ${st.think?'think':''}">Étape ${k+1}${st.lab?' · '+st.lab:''}${st.think?' · Réfléchir':''}</div><div class="q">${st.q}</div><div class="ans"></div><div class="fbx"></div><div class="aux"></div>`;
+  const ans=$('.ans',el), fbx=$('.fbx',el), aux=$('.aux',el);
+  const showSol = (ok) => { if(st.sol) aux.innerHTML = `<div class="sol"><div class="h">${'Correction'}</div>${st.sol}</div>`; };
+  const helpers = () => { if(done) return; let h='';
+    if(st.hint && !R.noHint) h+=`<button class="btn out sm" data-h="1">Indice</button> `;
+    if(U.tries>=2 || TUTOR) h+=`<button class="btn out sm" data-r="1">Voir la correction</button>`;
+    aux.innerHTML = h?`<div class="row" style="margin-top:8px">${h}</div><div class="hintbox"></div>`:'';
+    const hb=$('[data-h]',aux); if(hb) hb.onclick=()=>{ $('.hintbox',aux).innerHTML=`<div class="fb info">${st.hint}</div>`; rec.hint=true; save(); };
+    const rb=$('[data-r]',aux); if(rb) rb.onclick=()=>{ rec.done=true; rec.rev=true; if(!rec.tried){rec.tried=true;rec.first=false;} save(); onDone(); }; };
+  const result = (ok,msg,given,title) => { if(!rec.tried){ rec.tried=true; rec.first=ok; } if(ok){ rec.done=true; save(); onDone(); return; }
+    U.tries++; save(); fbx.innerHTML=`<div class="fb ko">${msg||'Pas encore. Relis la question et réessaie.'}</div>`; helpers();
+    popErr({msg, given, title, method:st.err, tries:U.tries}); };
+
+  if(st.t==='num'){
+    const fields = st.f || [{l:st.l||'', a:st.a, u:st.u}];
+    ans.innerHTML = `<div class="row">${fields.map((f,i)=>`${f.l?`<span>${f.l}</span>`:''}<input class="num ${done?'ok':''}" data-i="${i}" inputmode="decimal" autocomplete="off" value="${esc(done?(U.v&&U.v[i]!=null?U.v[i]:nf(f.a)):(U.v?U.v[i]||'':''))}" ${done?'disabled':''}>${f.u?`<span>${f.u}</span>`:''}`).join('<span style="width:6px"></span>')}${done?'':`<button class="btn sm" data-c="1">Vérifier</button>`}</div>`;
+    const ins=$$('input',ans);
+    const check=()=>{ U.v=ins.map(i=>i.value); const xs=ins.map(i=>parseNum(i.value));
+      if(xs.some(isNaN)){ fbx.innerHTML='<div class="fb ko">Écris un nombre dans chaque case (virgule acceptée).</div>'; return; }
+      let ok;
+      if(st.any){ const want=fields.map(f=>f.a).slice().sort((a,b)=>a-b), got=xs.slice().sort((a,b)=>a-b); ok=want.every((w,i)=>near(got[i],w,st.tol)); }
+      else ok=fields.every((f,i)=>near(xs[i],f.a,st.tol));
+      let msg=null, title=null;
+      if(!ok){
+        const A=fields.map(f=>f.a), sw=[].concat(st.swap??[]);
+        if(sw.length && xs.some(x=>sw.some(v=>near(x,v,st.tol))) && !xs.some(x=>A.some(a=>near(x,a,st.tol)&&sw.some(v=>near(a,v,st.tol))))){ title="Attention à l'axe"; msg=st.swapMsg||'Tu as donné une valeur lue sur le mauvais axe : relis ce que demande la question (un x, lu sur l\'axe des abscisses, ou une valeur de la fonction, lue sur l\'axe des ordonnées ?).'; S.axis=(S.axis||0)+1; rec.axis=true; }
+        if(!msg && st.wrong){ for(const [v,m] of st.wrong){ if(xs.some(x=>near(x,v,st.tol))){ msg=m; break; } } }
+        if(!msg && xs.some((x,i)=> st.any ? (A.some(a=>a!==0&&near(x,-a,st.tol)) && !A.some(a=>near(x,a,st.tol))) : (A[i]!==0&&near(x,-A[i],st.tol)))) msg='Ton résultat a le bon nombre mais le <u>mauvais signe</u>. Reprends ton calcul ligne par ligne et vérifie chaque signe « − » (en particulier −b, les carrés de nombres négatifs et les produits de deux nombres négatifs).';
+        if(!msg && fields.length>1){
+          if(st.any){ const nGood=xs.filter(x=>A.some(a=>near(x,a,st.tol))).length; if(nGood>0) msg=`${nGood} valeur${nGood>1?'s':''} juste${nGood>1?'s':''} sur ${fields.length}. Une équation du second degré peut avoir <u>deux</u> solutions : vérifie l'autre calcul.`; }
+          else { const ord=['première','deuxième','troisième'], bad=fields.map((f,i)=>near(xs[i],f.a,st.tol)?null:`la ${ord[i]} case${f.l?` (« ${f.l.replace(/\s*=\s*$/,'')} »)`:''}`).filter(Boolean); if(bad.length<fields.length) msg=`L'erreur est dans ${bad.join(' et ')}. Le reste est juste : garde-le et refais seulement ce calcul.`; }
+        }
+        if(!msg && xs.some(x=>A.some(a=>a!==0&&[10,100,1000].some(k=>near(x,a*k,st.tol)||near(x,a/k,st.tol))))) msg='Les chiffres sont bons, mais pas la taille du nombre (10, 100 ou 1 000 fois trop grand ou trop petit). Vérifie l\'unité demandée et la place de la virgule.';
+      }
+      const given=fields.map((f,i)=>`${f.l?f.l+' ':''}<b>${esc(U.v[i])}</b>${f.u?' '+f.u:''}`).join(' ; ');
+      result(ok,msg,given,title); };
+    if(!done){ $('[data-c]',ans).onclick=check; ins.forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')check();})); helpers(); }
+  }
+  else if(st.t==='mcq'){
+    if(!U.ord){ U.ord=st.opts.map((o,i)=>i); if(!st.fixed) for(let i=U.ord.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[U.ord[i],U.ord[j]]=[U.ord[j],U.ord[i]];} }
+    ans.innerHTML = U.ord.map(i=>`<button class="opt ${done&&i===0?'ok':''}" data-i="${i}" ${done?'disabled':''}>${st.opts[i][0]}</button>`).join('');
+    if(!done){ $$('.opt',ans).forEach(b=>b.onclick=()=>{ const i=+b.dataset.i; if(i===0){ result(true); } else { b.classList.add('ko'); b.disabled=true; if(st.opts[i][2]){S.axis=(S.axis||0)+1;rec.axis=true;} result(false, st.opts[i][1]||null, esc(st.opts[i][0]).replace(/&lt;(\/?(sub|u|b))&gt;/g,'<$1>'), st.opts[i][2]?"Attention à l'axe":null); } }); helpers(); }
+  }
+  else if(st.t==='signtab' || st.t==='vartab'){
+    renderTable(ans,st,U,done,(ok,msg,g,t)=>{ if(!ok){S.tabErr=(S.tabErr||0)+1;} result(ok,msg,g,t); });
+    if(!done) helpers();
+  }
+  else if(st.t==='redac'){
+    if(!done && !U.cmp){
+      ans.innerHTML=`<textarea placeholder="Écris ta réponse complète, en phrases, avec les unités.">${esc(rec.txt||'')}</textarea><div class="row" style="margin-top:6px"><button class="btn sm" data-c="1" ${ (rec.txt||'').length<15?'disabled':''}>Comparer avec la correction</button><span class="small muted">Écris d'abord, compare ensuite.</span></div>`;
+      const ta=$('textarea',ans), b=$('[data-c]',ans);
+      ta.oninput=()=>{ rec.txt=ta.value; b.disabled=ta.value.trim().length<15; save(); };
+      b.onclick=()=>{ U.cmp=true; renderStep(el,ex,k,st,R,onDone); };
+      if(TUTOR) helpers();
+    } else {
+      ans.innerHTML=`<div class="small muted">Ta réponse :</div><div class="sol" style="background:#fff;border:1px solid var(--line)">${esc(rec.txt||'(vide)').replace(/\n/g,'<br>')}</div>
+        <div class="sol"><div class="h">Réponse modèle</div>${st.model}</div>
+        ${done?'':`<div class="check" style="margin-top:8px"><div class="small"><b>Vérifie ta rédaction :</b></div>${st.check.map((c,i)=>`<label><input type="checkbox" data-k="${i}"> ${c}</label>`).join('')}</div>
+        <div class="row" style="margin-top:6px"><button class="btn sm" data-ok="1">J'ai vérifié, étape suivante</button><button class="btn out sm" data-ed="1">Corriger ma réponse</button></div>`}`;
+      if(!done){ $('[data-ok]',ans).onclick=()=>{ rec.chk=$$('[data-k]',ans).filter(c=>c.checked).length; rec.done=true; save(); onDone(); };
+        $('[data-ed]',ans).onclick=()=>{ U.cmp=false; renderStep(el,ex,k,st,R,onDone); }; }
+    }
+  }
+  if(done){ if(st.t!=='redac') showSol(true); if(rec.rev) fbx.innerHTML='<div class="fb warn">Correction consultée : refais cette étape seul plus tard.</div>'; else if(st.t!=='redac') fbx.innerHTML='<div class="fb ok">Juste.</div>'; }
+}
+
+/* ---------- tableaux interactifs ---------- */
+function renderTable(box,st,U,done,result){
+  const n=st.xs.length, K=2*n-1, isAsk=v=>v&&typeof v==='object'&&'ask' in v;
+  if(!U.tb){ U.tb = st.t==='signtab' ? {c:st.rows.map(r=>r.s.map(()=>'' )), x:st.xs.map(x=>isAsk(x)?'':null)} : {a:st.arrows.map(()=>''), v:st.vals.map(v=>isAsk(v)?'':null), x:st.xs.map(x=>isAsk(x)?'':null)}; }
+  const T=U.tb, norm=v=>(v==='|'||v==null)?'':String(v).replace('-','−');
+  const xcell=(x,i)=> isAsk(x) ? `<input class="cin ${U.res?(U.res.x[i]?'ok':'ko'):''}" data-x="${i}" inputmode="decimal" value="${esc(done?nf(x.ask):(T.x[i]||''))}" ${done?'disabled':''}>` : nf(x);
+  function draw(){
+    let html;
+    if(st.t==='signtab'){
+      const rows=st.rows.map((r,ri)=>({h:r.h, cells:r.s.map((v,k)=>{ if(k===0||k===K-1) return '';
+        if(done) return k%2?norm(v):(norm(v)?`<span>${norm(v)}</span>`:'');
+        const cur=T.c[ri][k], cls=U.res?(U.res.c[ri][k]?'ok':'ko'):'';
+        return k%2?`<button class="sb ${cur?'f':''} ${cls}" data-r="${ri}" data-k="${k}">${cur||'?'}</button>`:`<button class="zb ${cur?'f':''} ${cls}" data-r="${ri}" data-k="${k}">${cur}</button>`; })}));
+      html=sgnTable(st.xs.map(xcell), rows) + (done?'':`<p class="small muted">Touche une case pour choisir + ou −, et la petite case sous une valeur de x pour y mettre 0.</p>`);
+    } else {
+      const arrows = done?st.arrows:T.a;
+      const ac = arrows.map((a,i)=> done ? (a==='up'?UP:DN) : `<button class="ab ${a?'f':''} ${U.res?(U.res.a[i]?'ok':'ko'):''}" data-a="${i}">${a==='up'?UP:a==='down'?DN:'?'}</button>`);
+      const vc = st.vals.map((v,i)=> isAsk(v) ? `<input class="cin ${U.res?(U.res.v[i]?'ok':'ko'):''}" data-v="${i}" inputmode="decimal" value="${esc(done?nf(v.ask):(T.v[i]||''))}" ${done?'disabled':''}>` : (v==null?'':nf(v)));
+      html=varTable(st.xs.map(xcell), ac, vc, vpos(arrows,n), st.fname, st.var) + (done?'':`<p class="small muted">Touche les cases pour choisir les flèches (↗ croissante, ↘ décroissante), puis complète les valeurs. Les valeurs de x vont sur la ligne x, les valeurs de la fonction sur la deuxième ligne.</p>`);
+    }
+    box.innerHTML = html + (done?'':`<button class="btn sm" data-c="1">Vérifier</button>`);
+    if(done) return;
+    $$('[data-r]',box).forEach(b=>b.onclick=()=>{ const ri=+b.dataset.r,k=+b.dataset.k,o=k%2?['','+','−']:['','0']; T.c[ri][k]=o[(o.indexOf(T.c[ri][k])+1)%o.length]; U.res=null; draw(); });
+    $$('[data-a]',box).forEach(b=>b.onclick=()=>{ const i=+b.dataset.a,o=['','up','down']; T.a[i]=o[(o.indexOf(T.a[i])+1)%3]; U.res=null; draw(); });
+    $$('[data-x]',box).forEach(inp=>inp.oninput=()=>{T.x[+inp.dataset.x]=inp.value;});
+    $$('[data-v]',box).forEach(inp=>inp.oninput=()=>{T.v[+inp.dataset.v]=inp.value;});
+    $('[data-c]',box).onclick=()=>{
+      const xr=st.xs.map((x,i)=>!isAsk(x)||near(parseNum(T.x[i]),x.ask,1e-6));
+      let ok, msg=null;
+      if(st.t==='signtab'){
+        if(st.rows.some((r,ri)=>r.s.some((v,k)=>k%2===1&&!T.c[ri][k]))){ box.insertAdjacentHTML('beforeend','<div class="fb ko">Complète toutes les cases de signe.</div>'); return; }
+        const cr=st.rows.map((r,ri)=>r.s.map((v,k)=>k===0||k===K-1||norm(T.c[ri][k])===norm(v)));
+        U.res={c:cr,x:xr}; ok=cr.every(r=>r.every(Boolean))&&xr.every(Boolean);
+      } else {
+        if(T.a.some(a=>!a)){ box.insertAdjacentHTML('beforeend','<div class="fb ko">Choisis toutes les flèches.</div>'); return; }
+        const ar=T.a.map((a,i)=>a===st.arrows[i]), vr=st.vals.map((v,i)=>!isAsk(v)||near(parseNum(T.v[i]),v.ask,1e-6));
+        U.res={a:ar,v:vr,x:xr}; ok=ar.every(Boolean)&&vr.every(Boolean)&&xr.every(Boolean);
+      }
+      let title=null;
+      if(!ok){ const d=diagTable(st,T,U.res); if(d){ msg=d.html; if(d.axis){ S.axis=(S.axis||0)+1; title="Attention à l'axe"; } } }
+      draw(); result(ok,msg,'Les cases fausses sont en rouge dans ton tableau.',title);
+    };
+  }
+  draw();
+}
+
+function diagTable(st,T,res){
+  const isAsk=v=>v&&typeof v==='object'&&'ask' in v, K=2*st.xs.length-1, fname=st.fname||'f', L=[]; let axis=false;
+  const xval=i=>isAsk(st.xs[i])?st.xs[i].ask:parseNum(st.xs[i]);
+  const xlab=i=>isAsk(st.xs[i])?'α (le sommet)':st.xs[i];
+  if(st.t==='vartab'){
+    const cv=st.vals.map(v=>isAsk(v)?v.ask:v), pos=st.arrows[0]==='down';
+    res.x.forEach((ok,i)=>{ if(ok) return; const g=parseNum(T.x[i]);
+      if(isNaN(g)) L.push('Dans la ligne x, la case du sommet est vide ou ne contient pas un nombre.');
+      else if(cv.some(v=>v!=null&&near(g,v))){ axis=true; L.push(`Dans la ligne x, tu as écrit ${nf(g)} : c'est une valeur de ${fname}(x), pas une valeur de x. La ligne x contient l'<u>abscisse</u> du sommet, α = −b / (2a).`); }
+      else L.push(`Dans la ligne x, ${nf(g)} n'est pas l'abscisse du sommet. Recalcule α = −b / (2a).`); });
+    res.a.forEach((ok,i)=>{ if(ok) return;
+      L.push(`La flèche entre x = ${isAsk(st.xs[i])?'α':st.xs[i]} et x = ${isAsk(st.xs[i+1])?'α':st.xs[i+1]} est fausse. Ici a est ${pos?'positif':'négatif'} : la parabole est tournée vers ${pos?'le haut':'le bas'}, donc ${fname} ${pos?'<u>descend</u> jusqu\'au sommet puis <u>remonte</u>':'<u>monte</u> jusqu\'au sommet puis <u>redescend</u>'}.`); });
+    res.v.forEach((ok,i)=>{ if(ok) return; const g=parseNum(T.v[i]), xi=xval(i), xl=xlab(i), c=cv[i];
+      const fx=isAsk(st.xs[i])?`${fname}(α)`:`${fname}(${st.xs[i]})`;
+      if(isNaN(g)) L.push(`La case sous x = ${xl} est vide.`);
+      else if(near(g,xi)){ axis=true; L.push(`Sous x = ${xl}, tu as écrit ${nf(g)} : tu as <u>recopié la valeur de x</u>. Dans la ligne ${fname}, on écrit l'image : calcule ${fx}.`); }
+      else if(c!==0&&near(g,-c)) L.push(`Sous x = ${xl}, ${nf(g)} a le <u>mauvais signe</u>. Recalcule ${fx} en faisant attention aux « − » (par exemple −x² pour x = −1 donne −1, pas +1).`);
+      else if(st.xs.some((x,j)=>j!==i&&near(g,xval(j)))){ axis=true; L.push(`Sous x = ${xl}, tu as écrit ${nf(g)}, qui est une valeur de <u>x</u>. La ligne ${fname} ne contient que des images ${fname}(x).`); }
+      else if(cv.some((v,j)=>j!==i&&v!=null&&near(g,v))) L.push(`Sous x = ${xl}, ${nf(g)} est l'image d'une <u>autre</u> valeur de x. Chaque nombre de la ligne ${fname} est l'image du nombre écrit juste au-dessus de lui.`);
+      else L.push(`Sous x = ${xl}, ${nf(g)} n'est pas égal à ${fx}. Remplace x par ${isAsk(st.xs[i])?'α':st.xs[i]} dans l'expression et refais le calcul étape par étape.`); });
+  } else {
+    const nm=v=>String(v).replace('-','−');
+    st.rows.forEach((r,ri)=>r.s.forEach((v,k)=>{ if(k===0||k===K-1||res.c[ri][k]) return;
+      if(k%2){ const A=st.xs[(k-1)/2], B=st.xs[(k+1)/2], a=parseNum(A), b=parseNum(B);
+        let t = !isNaN(a)&&!isNaN(b) ? (b-a>=2?Math.round((a+b)/2):(a+b)/2) : isNaN(a)? b-1 : a+1;
+        if(st.fn){ const y=st.fn(t); L.push(`Entre ${A} et ${B}, le signe est faux. <u>Teste une valeur</u> de cet intervalle : pour x = ${nf(t)}, ${r.h.replace('(x)','('+nf(t)+')')} = ${nf(y)}, qui est ${y>0?'positif':'négatif'}.`); }
+        else L.push(`Entre ${A} et ${B}, le signe est faux. Rappel : le trinôme est du signe de a à l'extérieur des racines, et du signe contraire entre les racines.`);
+      } else { const X=st.xs[k/2]; if(nm(v)==='0') L.push(`Sous x = ${X}, il manque le 0 : ${X} est une racine, donc ${r.h.replace('(x)','('+X+')')} = 0.`); else L.push(`Sous x = ${X}, il ne faut pas de 0 : ${X} n'est pas une racine.`); } }));
+  }
+  const V=st.var||'x', fixv=t=>V==='x'?t:t.replace(/\bx\b/g,V).replace(/\(x\)/g,'('+V+')');
+  return L.length ? {html: fixv(L.length>1 ? '<ul>'+L.map(x=>'<li>'+x+'</li>').join('')+'</ul>' : L[0]), axis} : null;
+}
+function popErr(o){
+  let m=document.getElementById('errpop'); if(!m){ m=document.createElement('div'); m.id='errpop'; document.body.appendChild(m); }
+  m.innerHTML=`<div class="pop" role="dialog" aria-modal="true"><div class="ph">${o.title||'Où est l\'erreur ?'}</div>
+    ${o.given?`<div class="pg"><span class="small muted">${/^Les cases/.test(o.given)?'Ton tableau':'Ta réponse'}</span><br>${o.given}</div>`:''}
+    <div class="pm">${o.msg||(o.method?'Ta réponse ne correspond pas au résultat. Ce n\'est pas une erreur d\'axe ni de signe : c\'est le calcul ou la lecture qui est faux. Reprends-le ligne par ligne en suivant le rappel ci-dessous.':'Ce n\'est pas juste. Relis la question : que cherche-t-on exactement (un x ou une valeur de la fonction ?), et dans quelle unité ?')}</div>
+    ${o.method?`<div class="pr"><b>Rappel :</b> ${o.method}</div>`:''}
+    ${o.tries>=2?'<p class="small muted">Tu peux réessayer, ou afficher la correction sous la question.</p>':''}
+    <div class="row" style="justify-content:flex-end"><button class="btn" id="popok">Je corrige</button></div></div>`;
+  m.hidden=false; const c=()=>{ m.hidden=true; }; $('#popok').onclick=c; m.onclick=e=>{ if(e.target===m) c(); }; $('#popok').focus();
+}
+
+function where(q,plain){ const e=allEx().find(x=>x.id===q.w); if(!e) return ''; return plain?` (${e.title})`:` <span class="muted">(${esc(e.title)})</span>`; }
+function shareBox(box,subject,text){
+  const href=`mailto:${TUTOR_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
+  box.innerHTML=`<div class="card" style="margin:10px 0"><div class="small" style="margin-bottom:6px">Voici ton message${TUTOR_EMAIL?` pour <b>${esc(TUTOR_EMAIL)}</b>`:''}. Ouvre-le dans ta messagerie, ou copie-le et colle-le dans un message.</div>
+    <textarea readonly style="min-height:160px;font-size:13px">${esc(text)}</textarea>
+    <div class="row" style="margin-top:8px">${TUTOR_EMAIL?`<a class="btn sm" href="${href}" target="_blank" rel="noopener" style="text-decoration:none">Ouvrir dans ma messagerie</a>`:''}<button class="btn out sm" data-cp="1">Copier le message</button></div><div class="small muted" data-st="1" style="margin-top:4px"></div></div>`;
+  const ta=$('textarea',box), st=$('[data-st]',box);
+  $('[data-cp]',box).onclick=()=>{ const done=()=>{st.textContent='Message copié. Colle-le dans un mail ou une messagerie.';};
+    const fallback=()=>{ ta.focus(); ta.select(); try{ document.execCommand('copy'); done(); }catch(e){ st.textContent='Sélectionne le texte et copie-le (Ctrl+C ou appui long).'; } };
+    if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(text).then(done,fallback); else fallback(); };
+}
+
+/* ---------- questions ---------- */
+function toggleNotes(force){
+  const p=$('#notePanel'); if(force===undefined) p.hidden=!p.hidden; else p.hidden=!force;
+  if(p.hidden) return;
+  p.innerHTML=`<b>Mes questions</b><p class="small muted">Écris ce que tu n'as pas compris. Tes questions partent avec ton bilan ; tu peux aussi les envoyer tout de suite. Pose-les également en classe.</p>
+    <textarea id="nq" placeholder="Par exemple : pourquoi le sommet est en x = −b/(2a) ?"></textarea>
+    <div class="row" style="margin-top:6px"><button class="btn sm" id="nadd">Ajouter</button>${(S.notes||[]).length?'<button class="btn out sm" id="nsend">Envoyer mes questions</button>':''}<button class="btn out sm" id="nclose">Fermer</button></div><div id="nshare"></div>
+    <ul class="small">${(S.notes||[]).map((q,i)=>`<li>${esc(q.t)} <span class="muted">(${q.d}${where(q)?' · '+where(q,true).replace(/^ \(|\)$/g,''):''})</span> <button class="qbtn" data-del="${i}" style="padding:0 8px">✓ posée</button></li>`).join('')}</ul>`;
+  $('#nadd').onclick=()=>{ const t=$('#nq').value.trim(); if(!t) return; const where=S.page; (S.notes=S.notes||[]).push({t, d:new Date().toLocaleDateString('fr-FR'), w:where}); save(); toggleNotes(true); };
+  $('#nclose').onclick=()=>toggleNotes(false);
+  const ns=$('#nsend'); if(ns) ns.onclick=()=>shareBox($('#nshare'),'Questions second degré – '+(S.name||'élève'),[`Questions de ${S.name||'élève'} (${new Date().toLocaleDateString('fr-FR')})`,'',...S.notes.map(q=>'- '+q.t+where(q,true))].join('\n'));
+  $$('[data-del]',p).forEach(b=>b.onclick=()=>{ S.notes.splice(+b.dataset.del,1); save(); toggleNotes(true); });
+}
+
+/* ---------- bilan ---------- */
+function bilan(app){
+  document.documentElement.style.setProperty('--sc','#334155'); document.documentElement.style.setProperty('--sct','#E8EDF3');
+  const name=S.name||'Élève'; let rows='', miss=[], redac=0, redacN=0, revs=0;
+  SECTIONS.forEach(s=>{ let d=0,n=0,f=0,t=0; s.ex.forEach(e=>{ const x=exStats(e); d+=x.done; n+=x.n; f+=x.first; t+=e.steps.filter(z=>z.t!=='redac').length;
+      const r=S.res[e.id]; if(r) e.steps.forEach((st,k)=>{ const q=r.st[k]; if(!q) return; if(st.t==='redac'){ if(q.done){redac++; redacN+=st.check.length; redac+=0;} return; } if(q.rev) revs++; if(q.tried&&!q.first) miss.push(`${e.title} · étape ${k+1}${q.axis?' (axe)':''}`); }); });
+    rows+=`<div>${s.title}</div><div><div class="bar"><i style="width:${Math.round(100*d/n)}%"></i></div><div class="bar" style="margin-top:3px"><i class="g" style="width:${t?Math.round(100*f/t):0}%"></i></div></div><div class="small">${f}/${t}</div>`; });
+  const chk = SECTIONS.flatMap(s=>s.ex).reduce((a,e)=>{const r=S.res[e.id]; if(r) e.steps.forEach((st,k)=>{ if(st.t==='redac'&&r.st[k]&&r.st[k].done){a.c+=r.st[k].chk||0;a.n+=st.check.length;a.k++;} }); return a;},{c:0,n:0,k:0});
+  app.innerHTML=`<button class="back" id="bk">← Sommaire</button><h2>Bilan — ${esc(name)}</h2>
+    <div class="card"><div class="small muted" style="margin-bottom:8px">Bleu : étapes faites · Vert : réussies du premier coup (sans indice ni correction)</div><div class="rbars">${rows}</div></div>
+    <div class="card"><b>Points de vigilance</b><ul class="small">
+      <li>Confusions d'axe (x lu à la place de f(x) ou l'inverse) : <b>${S.axis||0}</b></li>
+      <li>Tableaux de signes ou de variations à reprendre : <b>${S.tabErr||0}</b></li>
+      <li>Corrections consultées : <b>${revs}</b></li>
+      <li>Conclusions rédigées : <b>${chk.k}</b> · critères cochés : ${chk.c} / ${chk.n}</li></ul></div>
+    ${miss.length?`<div class="card"><b>À refaire (raté au premier essai)</b><ul class="small">${miss.map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div>`:''}
+    <div class="card"><b>Mes questions</b>${(S.notes||[]).length?`<ul class="small">${S.notes.map(q=>`<li>${esc(q.t)}${where(q)}</li>`).join('')}</ul>`:'<p class="small muted">Aucune pour l\'instant.</p>'}</div>
+    <div class="row"><button class="btn" id="send">Envoyer mon bilan</button><button class="btn out" id="prt">Enregistrer en PDF</button></div><div id="si"></div>
+    <div class="card" style="margin-top:28px"><button class="back" id="tut">Espace mentore</button><div id="ta"></div></div>`;
+  $('#bk').onclick=()=>go('home'); $('#prt').onclick=()=>window.print();
+  $('#send').onclick=()=>{ const L=[`Bilan — ${name} (${new Date().toLocaleDateString('fr-FR')})`,'',...SECTIONS.flatMap(s=>s.ex.map(e=>{const x=exStats(e);return `${e.title} : ${x.done}/${x.n} étapes, ${x.first} réussies du premier coup`;})),'',`Confusions d'axe : ${S.axis||0}`,`Erreurs de tableaux : ${S.tabErr||0}`,`Corrections consultées : ${revs}`,'','À refaire :',...(miss.length?miss.map(m=>'- '+m):['rien']),'','Mes questions :',...((S.notes||[]).length?S.notes.map(q=>'- '+q.t+where(q,true)):['aucune'])];
+    shareBox($('#si'), 'Bilan second degré – '+name, L.join('\n')); };
+  $('#tut').onclick=()=>{ const ta=$('#ta'); if(ta.innerHTML){ta.innerHTML='';return;}
+    ta.innerHTML=`<div class="row" style="margin-top:8px"><input class="num" id="tc" type="password" placeholder="code"><button class="btn sm" id="tok">OK</button></div><div id="tp"></div>`;
+    const open=()=>{ if($('#tc').value!==TUTOR_CODE){ $('#tp').innerHTML='<div class="fb ko">Code incorrect.</div>'; return; }
+      $('#tp').innerHTML=`<div class="row" style="margin-top:10px"><button class="btn out sm" id="tm">${TUTOR?'Désactiver':'Activer'} le mode correction</button><button class="btn out sm" id="tr">Effacer toute la progression</button></div><div id="tconf"></div>`;
+      $('#tm').onclick=()=>{TUTOR=!TUTOR;open();};
+      $('#tr').onclick=()=>{ $('#tconf').innerHTML=`<div class="fb ko">Tout effacer sur cet appareil ? <button class="btn sm" id="ty" style="background:var(--ko);border-color:var(--ko)">Oui</button> <button class="btn out sm" id="tn">Annuler</button></div>`;
+        $('#tn').onclick=()=>$('#tconf').innerHTML=''; $('#ty').onclick=()=>{ const nm=S.name; S={name:nm,res:{},notes:[],page:'home',axis:0,tabErr:0}; Object.keys(UI).forEach(k=>delete UI[k]); save(); go('home'); }; }; };
+    $('#tok').onclick=open; $('#tc').addEventListener('keydown',e=>{if(e.key==='Enter')open();}); };
+}
+/* ===================== CONTENU =====================
+   Étapes :
+   num    {q, a | f:[{l,a,u}], any, tol, swap, swapMsg, wrong:[[valeur,message]], hint, sol, err}
+   mcq    {q, opts:[[texte, explication de l'erreur, erreurAxe?]...]  (la PREMIÈRE option est la bonne), hint, sol, err}
+   signtab{q, xs, rows:[{h,s}], fn, hint, sol, err}
+   vartab {q, xs, arrows, vals, fname, fn, hint, sol, err}   ({ask:v} = case à compléter)
+   redac  {q, model, check:[...]}
+   think:true  = étape « Réfléchir » (raisonnement avant le calcul)
+   err   = rappel de méthode affiché dans la fenêtre d'erreur
+====================================================== */
+const ERR_ALPHA = 'L\'abscisse du sommet est α = −b / (2a). Attention : −b change le signe de b, et 2a peut être négatif.';
+const ERR_IMG = 'Pour calculer une image, remplace x par la valeur dans l\'expression, puis calcule dans l\'ordre : puissances, multiplications, additions.';
+const ERR_DELTA = 'Δ = b² − 4ac. Écris d\'abord a, b et c avec leurs signes, puis remplace. b² est toujours positif.';
+const ERR_ROOTS = 'Si Δ > 0 : x₁ = (−b − √Δ) / (2a) et x₂ = (−b + √Δ) / (2a). Calcule le numérateur, puis divise par 2a (attention si a est négatif).';
+const fusee = t => -t*t + 6*t + 16;
+const Bv = x => -x*x + 18*x - 45;
+const hb = t => -5*t*t + 20*t + 25;
+
+
+/* étape « Que fais-tu maintenant ? » avant de chercher les racines */
+const NEXT = (ineq, v, alphaMeaning, graphHint) => ({t:'mcq', think:true, q:`Tu dois résoudre ${ineq}. Que fais-tu maintenant ?`,
+  opts:[[`Je cherche les racines du trinôme (avec Δ) : ce sont les valeurs où il s'annule et peut changer de signe. Ensuite, j'utilise le signe de a pour savoir où il est positif ou négatif.`],
+    [`J'isole ${v} comme dans une inéquation du premier degré.`,`Avec un ${v}², on ne peut pas isoler ${v} comme dans 2${v} + 3 ≥ 0. Pour une inéquation du second degré, on étudie le <u>signe</u> du trinôme, et pour cela il faut d'abord savoir où il s'annule.`],
+    [`Je calcule α = −b / (2a).`,`α donne le sommet (${alphaMeaning}). Il ne dit pas où le trinôme passe du négatif au positif : ce sont les <u>racines</u> qui le disent.`],
+    [`Je divise tout par ${v}.`,`On ne divise jamais une inéquation par ${v} : on ne connaît pas son signe, et ${v} peut valoir 0. Et le ${v}² ne disparaîtrait pas.`]],
+  sol:`Pour résoudre une inéquation « trinôme ≥ 0 » ou « ≤ 0 » : 1) chercher les racines avec Δ ; 2) faire le tableau de signes (signe de a à l'extérieur des racines, signe contraire entre elles) ; 3) lire les intervalles qui conviennent.${graphHint?' '+graphHint:''}`});
+
+const SECTIONS = [
+{ id:'pb', title:'Problèmes', sub:'Ballon, enclos, concert', c:['#7C3AED','#EFE6FD'],
+  method:`<ol><li><b>Comprendre</b> : que représente x (ou t) ? que représente la fonction ? dans quelle unité ? sur quel intervalle ?</li>
+    <li><b>Traduire</b> la question : cherche-t-on une valeur de x (axe horizontal) ou une valeur de la fonction (axe vertical) ? « au moins » : ≥ ; « plus de » : &gt; ; « gagner de l'argent » : bénéfice &gt; 0.</li>
+    <li><b>Prévoir</b> où la réponse apparaîtra : au-dessus de l'axe des abscisses ? au sommet ? au-dessus d'une droite horizontale ?</li>
+    <li><b>Calculer</b> avec les outils du cours : Δ, racines, tableau de signes, sommet, tableau de variations.</li>
+    <li><b>Conclure dans le contexte</b> : une phrase qui répond à la question, avec l'unité, en tenant compte des contraintes (nombre entier, temps positif…).</li></ol>`,
+  ex:[
+/* ================================================================== BALLON */
+  { id:'p2', title:'Le ballon lancé du toit', sub:'Hauteur maximale, retour au sol, au moins 40 m',
+    ctx:()=>`<p>Un ballon est lancé <b>verticalement</b> vers le haut depuis le toit d'un immeuble. Sa hauteur (en m) en fonction du temps t (en s) est modélisée par h(t) = −5t² + 20t + 25, pour t ∈ [0 ; 5].</p>`+plot({xmin:0,xmax:5.5,ymin:0,ymax:50,xstep:0.5,ystep:5,xlab:1,ylab:10,w:330,h:270,xt:'t (s)',yt:'h (m)',fns:[{f:hb,from:0,to:5}]}),
+    steps:[
+    {t:'mcq', think:true, q:'Le ballon monte tout droit puis retombe tout droit. Pourtant, la courbe a la forme d\'un arc. Comment l\'expliquer ?',
+      opts:[['La courbe représente la hauteur en fonction du temps : le temps avance vers la droite, même si le ballon monte et descend sur place.'],
+        ['Le vent pousse le ballon vers la droite.','Aucun vent n\'est mentionné. L\'axe horizontal est un axe de <u>temps</u> : la forme d\'arc vient du temps qui passe, pas d\'un déplacement.',true],
+        ['Le modèle est faux, la courbe devrait être une droite verticale.','Une droite verticale ne peut pas représenter une fonction : à un instant t correspond une seule hauteur. La courbe est juste ; c\'est sa lecture qui doit être correcte.']],
+      sol:'La courbe n\'est pas la trajectoire. Chaque point associe un instant (abscisse) à une hauteur (ordonnée).'},
+    {t:'num', q:'Calcule h(0). Que représente ce nombre ?', f:[{l:'h(0) =',a:25,u:'m'}], swap:[0], swapMsg:'h(0) n\'est pas 0 : c\'est la hauteur à l\'instant 0. Remplace t par 0 dans l\'expression.', err:ERR_IMG, sol:'h(0) = 25 : c\'est la hauteur du toit, d\'où le ballon est lancé.'},
+    {t:'mcq', think:true, lab:'Hauteur maximale', q:'Pour trouver la hauteur maximale, que dois-tu chercher ?',
+      opts:[['Le sommet de la parabole : a = −5 < 0, donc h admet un maximum en α = −b / (2a).'],
+        ['h(5), la dernière valeur de l\'intervalle.','h(5) est la hauteur au bout de 5 s. Regarde la courbe : ce n\'est pas son point le plus haut.'],
+        ['Les solutions de h(t) = 0.','Les solutions de h(t) = 0 donnent les instants où le ballon est au sol, pas le moment où il est le plus haut.']],
+      sol:'a &lt; 0 : la parabole est tournée vers le bas, son sommet est le point le plus haut.'},
+    {t:'num', q:'Au bout de combien de temps le ballon atteint-il sa hauteur maximale ?', f:[{l:'t =',a:2,u:'s'}], swap:[45], swapMsg:'45 est une hauteur. On demande un temps : c\'est α, l\'abscisse du sommet.', wrong:[[-2,'α = −b / (2a) = −20 / (−10) : un nombre négatif divisé par un nombre négatif est positif.']], hint:'α = −b / (2a) avec a = −5 et b = 20.', err:ERR_ALPHA, sol:'α = −20 / (2 × (−5)) = 2 : au bout de 2 s.'},
+    {t:'num', q:'Quelle est cette hauteur maximale ?', f:[{l:'',a:45,u:'m'}], swap:[2], swapMsg:'2 est l\'instant. On demande une hauteur : calcule h(2).', wrong:[[85,'Attention : −5t² avec t = 2 donne −5 × 4 = −20 (on calcule le carré d\'abord).']], err:ERR_IMG, sol:'h(2) = −5 × 4 + 40 + 25 = 45 m.'},
+    {t:'redac', q:'Rédige la réponse : quelle est la hauteur maximale atteinte par le ballon, et au bout de combien de temps ?', model:'a = −5 &lt; 0, donc h admet un maximum en α = −b / (2a) = 2. <b>Le ballon atteint sa hauteur maximale de 45 m au bout de 2 secondes.</b>', check:['J\'ai justifié que c\'est un maximum (a &lt; 0).','J\'ai donné la hauteur ET le temps, avec les unités.']},
+    {t:'mcq', think:true, lab:'Retour au sol', q:'« Le ballon touche le sol » se traduit par…', opts:[['h(t) = 0'],['t = 0','t = 0 est l\'instant du lancement. Toucher le sol, c\'est avoir une <u>hauteur</u> nulle.',true],['h(t) = 25','25 m est la hauteur du toit, pas celle du sol.']], sol:'Au sol, la hauteur est nulle : h(t) = 0.'},
+    {t:'mcq', q:'L\'équation h(t) = 0 équivaut à…', opts:[['t² − 4t − 5 = 0 (en divisant tout par −5)'],['t² + 4t + 5 = 0','En divisant par −5, <u>tous</u> les termes changent de signe : −5t² devient t², 20t devient −4t, et 25 devient −5.'],['−5t² + 20t = 25','Si on passe 25 de l\'autre côté, il devient −25 : −5t² + 20t = −25.']], sol:'−5t² + 20t + 25 = 0 ⟺ t² − 4t − 5 = 0.'},
+    {t:'num', q:'Résous t² − 4t − 5 = 0.', f:[{l:'t₁ =',a:-1},{l:'t₂ =',a:5}], any:true, hint:'Δ = 16 + 20 = 36.', err:ERR_ROOTS, sol:'Δ = 36, t₁ = (4 − 6) / 2 = −1 et t₂ = (4 + 6) / 2 = 5.'},
+    {t:'mcq', think:true, q:'Quelle solution garde-t-on ?', opts:[['t = 5, car t ∈ [0 ; 5] : un temps négatif n\'a pas de sens ici.'],['t = −1','t = −1 correspondrait à une seconde <u>avant</u> le lancement, et −1 ∉ [0 ; 5].'],['Les deux.','On ne garde que les solutions qui appartiennent à l\'intervalle d\'étude et qui ont un sens dans le contexte.']], sol:'t = −1 ∉ [0 ; 5] : on garde t = 5.'},
+    {t:'redac', q:'Conclus : au bout de combien de temps le ballon touche-t-il le sol ?', model:'Les solutions de h(t) = 0 sont −1 et 5 ; seule 5 appartient à [0 ; 5]. <b>Le ballon touche le sol au bout de 5 secondes.</b>', check:['J\'ai expliqué pourquoi on rejette −1.','J\'ai donné la réponse avec l\'unité.']},
+    {t:'mcq', think:true, lab:'Au moins 40 m', q:'Sur le graphique, comment repérer les instants où le ballon est à au moins 40 m ?',
+      opts:[['Tracer la droite horizontale y = 40 et regarder où la courbe est au-dessus.'],
+        ['Tracer la droite verticale t = 40.','40 est une <u>hauteur</u> : elle se place sur l\'axe vertical, donc la droite est horizontale. D\'ailleurs, t = 40 s est hors de l\'intervalle.',true],
+        ['Regarder où la courbe monte.','Le ballon peut être haut en descendant. « Au moins 40 m » est une question de <u>hauteur</u>, pas de sens de variation.']],
+      sol:'h(t) ≥ 40 : on cherche les points de la courbe situés au-dessus de la droite y = 40, puis on lit leurs abscisses (des instants).'},
+    {t:'mcq', q:'h(t) ≥ 40 équivaut à…', opts:[['−5t² + 20t − 15 ≥ 0'],['−5t² + 20t + 65 ≥ 0','On <u>soustrait</u> 40 des deux côtés : 25 − 40 = −15.'],['−5t² + 20t ≥ 15','C\'est juste, mais pour étudier un signe on veut « … ≥ 0 » : passe aussi 15 à gauche.']], sol:'−5t² + 20t + 25 ≥ 40 ⟺ −5t² + 20t − 15 ≥ 0.'},
+    NEXT('−5t² + 20t − 15 ≥ 0','t','le moment où le ballon est le plus haut','Sur le graphique, les racines sont les instants où la courbe coupe la droite y = 40.'),
+    {t:'num', q:'Calcule les racines de −5t² + 20t − 15.', f:[{l:'t₁ =',a:1},{l:'t₂ =',a:3}], any:true, hint:'Tu peux diviser par −5 : t² − 4t + 3 = 0.', err:ERR_ROOTS, sol:'t² − 4t + 3 = 0 : Δ = 16 − 12 = 4, t₁ = 1, t₂ = 3.'},
+    {t:'mcq', q:'Ensemble des solutions de −5t² + 20t − 15 ≥ 0 sur [0 ; 5] :', opts:[['S = [1 ; 3]'],['S = [0 ; 1] ∪ [3 ; 5]','a = −5 &lt; 0 : l\'expression est positive <u>entre</u> les racines. Vérifie avec t = 2 : −20 + 40 − 15 = 5 &gt; 0.'],['S = ]1 ; 3[','« ≥ » : les racines sont incluses, crochets fermés.']], sol:'a &lt; 0 : positif entre les racines, bornes incluses : S = [1 ; 3].'},
+    {t:'redac', q:'Pendant combien de temps le ballon est-il à au moins 40 m de hauteur ?', model:'h(t) ≥ 40 pour t ∈ [1 ; 3]. <b>Le ballon est à au moins 40 m entre 1 s et 3 s après le lancement, soit pendant 2 secondes.</b>', check:['J\'ai donné l\'intervalle de temps.','J\'ai calculé la durée (3 − 1 = 2 s).','J\'ai utilisé les unités.']},
+    {t:'vartab', lab:'Synthèse', q:'Dresse le tableau de variations de h sur [0 ; 5].', xs:['0',{ask:2},'5'], arrows:['up','down'], vals:[{ask:25},{ask:45},{ask:0}], fname:'h', var:'t', fn:hb, err:'Ligne t : les bornes et α. Ligne h : les images h(0), h(α), h(5).', sol:'h(0) = 25, h(2) = 45, h(5) = 0. h est croissante sur [0 ; 2] puis décroissante sur [2 ; 5].'}
+  ]},
+/* ================================================================== ENCLOS */
+  { id:'p3', title:'L\'enclos contre le mur', sub:'Aire maximale',
+    ctx:`<p>Un éleveur dispose de 40 m de grillage pour construire un enclos rectangulaire le long d'un mur. Le côté le long du mur ne nécessite pas de grillage. On note x la longueur, en mètres, de chacun des deux côtés perpendiculaires au mur.</p>
+      <div class="svgbox"><svg viewBox="0 0 260 140" width="260"><line x1="10" y1="20" x2="250" y2="20" stroke="#1B2A41" stroke-width="5"/><text x="130" y="14" font-size="11" text-anchor="middle" fill="#56657C">mur</text><rect x="50" y="20" width="160" height="90" fill="#EFE6FD" stroke="#7C3AED" stroke-width="2.5"/><text x="38" y="70" font-size="13" font-weight="600" text-anchor="middle" fill="#1B2A41">x</text><text x="222" y="70" font-size="13" font-weight="600" text-anchor="middle" fill="#1B2A41">x</text><text x="130" y="128" font-size="12" text-anchor="middle" fill="#1B2A41">côté parallèle au mur</text></svg></div>`,
+    steps:[
+    {t:'mcq', q:'Quelle est la longueur du côté parallèle au mur ?', opts:[['40 − 2x'],['40 − x','Il y a <u>deux</u> côtés de longueur x qui utilisent du grillage : x + x + (côté parallèle) = 40.'],['20 − x','Ce serait un demi-périmètre, mais ici le mur remplace un côté : tout le grillage sert pour trois côtés.']], sol:'x + x + (côté) = 40, donc côté = 40 − 2x.'},
+    {t:'mcq', think:true, q:'Avant de calculer : que se passe-t-il si x est très petit (proche de 0) ? Et si x est proche de 20 ?',
+      opts:[['Dans les deux cas, l\'enclos est très aplati et son aire est presque nulle : il doit exister une valeur intermédiaire qui donne la plus grande aire.'],
+        ['Plus x est grand, plus l\'aire est grande.','Si x = 20, le côté parallèle mesure 40 − 40 = 0 m : l\'enclos n\'a plus de surface.'],
+        ['L\'aire est toujours la même, car on utilise toujours 40 m de grillage.','Même longueur de grillage ne veut pas dire même aire. Compare x = 1 (aire 1 × 38 = 38 m²) et x = 10 (aire 10 × 20 = 200 m²).']],
+      sol:'Si x ≈ 0, l\'enclos est une bande très fine le long du mur ; si x ≈ 20, le côté parallèle est presque nul. L\'aire est presque nulle aux deux extrémités : on s\'attend à un maximum entre les deux.'},
+    {t:'mcq', q:'Sur quel intervalle x peut-il varier ?', opts:[['[0 ; 20]'],['[0 ; 40]','Le côté parallèle doit être positif : 40 − 2x ≥ 0, donc x ≤ 20.'],[']0 ; +∞[','Le grillage est limité à 40 m.']], sol:'x ≥ 0 et 40 − 2x ≥ 0 ⟺ x ≤ 20 : x ∈ [0 ; 20].'},
+    {t:'mcq', q:'L\'aire de l\'enclos est A(x) = …', opts:[['−2x² + 40x'],['−x² + 40x','A(x) = x × (40 − 2x) : x × 2x = 2x², pas x².'],['40x − 2x','x × 2x = 2x² : le produit de x par x donne x².']], err:'Aire d\'un rectangle = longueur × largeur. Ici : x × (40 − 2x), puis développe.', sol:'A(x) = x(40 − 2x) = 40x − 2x² = −2x² + 40x.'},
+    {t:'num', q:'Pour quelle valeur de x l\'aire est-elle maximale ?', f:[{l:'x =',a:10,u:'m'}], swap:[200], swapMsg:'200 serait une aire (une valeur de A). On demande une longueur x : c\'est α.', wrong:[[-10,'α = −b / (2a) = −40 / (−4) : le résultat est positif.']], err:ERR_ALPHA, sol:'a = −2 &lt; 0 : maximum en α = −40 / (2 × (−2)) = 10.'},
+    {t:'num', q:'Quelle est alors l\'aire maximale ?', f:[{l:'',a:200,u:'m²'}], swap:[10], swapMsg:'10 est la longueur x. On demande l\'aire : calcule A(10).', err:ERR_IMG, sol:'A(10) = −2 × 100 + 400 = 200 m².'},
+    {t:'vartab', q:'Dresse le tableau de variations de A sur [0 ; 20].', xs:['0',{ask:10},'20'], arrows:['up','down'], vals:[{ask:0},{ask:200},{ask:0}], fname:'A', fn:x=>-2*x*x+40*x, sol:'A(0) = 0, A(10) = 200, A(20) = 0 : cela confirme la prévision (aire nulle aux extrémités).'},
+    {t:'mcq', think:true, q:'Un camarade pense que la meilleure forme est un carré : il prend x = 40 / 3 ≈ 13,3 m, pour que les trois côtés grillagés soient égaux. Qu\'en penses-tu ?',
+      opts:[['Il se trompe : A(40/3) ≈ 177,8 m², moins que 200 m². Le mur fournit déjà un côté gratuit : la meilleure forme est un rectangle de 10 m sur 20 m.'],
+        ['Il a raison : le carré donne toujours l\'aire maximale.','Calcule A(13,3) ≈ −2 × 177 + 533 ≈ 178 &lt; 200. L\'intuition « le carré est le meilleur » est vraie pour un rectangle sans mur, pas ici.'],
+        ['On ne peut pas savoir sans tracer la courbe.','Le tableau de variations suffit : le maximum de A est 200, atteint seulement en x = 10.']],
+      sol:'Le maximum est atteint uniquement en x = 10. Pour x = 40/3, l\'enclos est bien un carré (côtés de 13,3 m, car 40 − 2 × 13,3 ≈ 13,3), mais son aire, A(40/3) = 1600/9 ≈ 177,8 m², est inférieure à 200 m².'},
+    {t:'redac', q:'Quelles dimensions l\'éleveur doit-il choisir pour avoir l\'aire maximale ? Quelle est cette aire ?', model:'L\'aire est maximale pour x = 10. Le côté parallèle au mur mesure alors 40 − 2 × 10 = 20 m. <b>L\'enclos doit mesurer 10 m sur 20 m ; son aire est alors de 200 m².</b>', check:['J\'ai donné les <u>deux</u> dimensions.','J\'ai donné l\'aire avec son unité (m²).']},
+    {t:'mcq', lab:'Au moins 150 m²', q:'A(x) ≥ 150 équivaut à…', opts:[['−2x² + 40x − 150 ≥ 0'],['−2x² + 40x + 150 ≥ 0','On <u>soustrait</u> 150 des deux côtés.'],['x ≥ 150','150 est une aire (valeur de A), x est une longueur : on ne compare pas x à 150.',true]], sol:'−2x² + 40x ≥ 150 ⟺ −2x² + 40x − 150 ≥ 0.'},
+    NEXT('−2x² + 40x − 150 ≥ 0','x','la longueur qui donne l\'aire maximale',null),
+    {t:'num', q:'Calcule les racines de −2x² + 40x − 150.', f:[{l:'x₁ =',a:5},{l:'x₂ =',a:15}], any:true, hint:'Divise par −2 : x² − 20x + 75 = 0.', err:ERR_ROOTS, sol:'x² − 20x + 75 = 0 : Δ = 400 − 300 = 100, x₁ = 5, x₂ = 15.'},
+    {t:'redac', q:'Pour quelles valeurs de x l\'aire est-elle d\'au moins 150 m² ? Conclus dans le contexte.', model:'a = −2 &lt; 0 : −2x² + 40x − 150 ≥ 0 entre les racines, donc pour x ∈ [5 ; 15]. <b>L\'aire est d\'au moins 150 m² si les côtés perpendiculaires au mur mesurent entre 5 m et 15 m.</b>', check:['J\'ai justifié le signe avec a.','J\'ai donné l\'intervalle avec les bornes incluses.','J\'ai conclu avec les mots du problème.']}
+  ]},
+/* ================================================================== CONCERT */
+  { id:'p4', title:'Le prix du billet de concert', sub:'Recette maximale, inéquation (attention au sens)',
+    ctx:`<p>Un groupe organise un concert. Si le billet coûte x euros, avec 0 ≤ x ≤ 25, le nombre de spectateurs attendus est N(x) = 500 − 20x. La recette, en euros, est R(x) = x × N(x).</p>`,
+    steps:[
+    {t:'mcq', think:true, q:'Avant tout calcul : si le prix du billet augmente, la recette augmente-t-elle forcément ?',
+      opts:[['Non : chaque billet rapporte plus, mais il y a moins de spectateurs. Les deux effets s\'opposent.'],
+        ['Oui : plus le billet est cher, plus on gagne.','N(x) = 500 − 20x diminue quand x augmente : à 25 €, N(25) = 0 et personne ne vient.'],
+        ['Non : la recette diminue toujours quand le prix augmente.','Avec un billet gratuit (x = 0), la recette est nulle ; à 10 €, elle vaut 3 000 €. Elle commence donc par augmenter.']],
+      sol:'Recette nulle à 0 € (billet gratuit) et à 25 € (personne ne vient) : comme pour l\'enclos, on s\'attend à un maximum entre les deux.'},
+    {t:'num', q:'Combien de spectateurs pour un billet à 10 € ? Quelle recette ?', f:[{l:'N(10) =',a:300},{l:'R(10) =',a:3000,u:'€'}], err:'N(10) = 500 − 20 × 10. Puis R(10) = prix × nombre de spectateurs.', sol:'N(10) = 500 − 200 = 300 spectateurs ; R(10) = 10 × 300 = 3 000 €.'},
+    {t:'mcq', q:'Développe R(x).', opts:[['R(x) = −20x² + 500x'],['R(x) = 500x − 20x','x × (−20x) = −20x² : x fois x donne x².'],['R(x) = −20x + 500','C\'est N(x) réécrit. Il faut encore multiplier par x.']], sol:'R(x) = x(500 − 20x) = 500x − 20x² = −20x² + 500x.'},
+    {t:'num', q:'Pour quel prix la recette est-elle maximale ?', f:[{l:'x =',a:12.5,u:'€'}], swap:[3125], swapMsg:'3 125 € serait la recette (valeur de R). On demande un prix : la valeur de x, c\'est-à-dire α.', wrong:[[-12.5,'α = −b / (2a) = −500 / (−40) : le résultat est positif.']], err:ERR_ALPHA, sol:'a = −20 &lt; 0 : maximum en α = −500 / (−40) = 12,5.'},
+    {t:'num', q:'Quelle est alors la recette, et combien de spectateurs y a-t-il ?', f:[{l:'R(12,5) =',a:3125,u:'€'},{l:'N(12,5) =',a:250}], err:ERR_IMG+' 12,5² = 156,25.', sol:'R(12,5) = −20 × 156,25 + 6 250 = 3 125 € ; N(12,5) = 500 − 250 = 250 spectateurs.'},
+    {t:'redac', q:'Rédige la conclusion : quel prix fixer, pour quelle recette ?', model:'La recette est maximale pour un billet à <b>12,50 €</b> : il y aura alors 250 spectateurs, et la recette sera de <b>3 125 €</b>.', check:['J\'ai donné le prix optimal en euros.','J\'ai donné la recette maximale.','J\'ai écrit une phrase dans le contexte.']},
+    {t:'mcq', think:true, lab:'Recette d\'au moins 2 000 €', q:'Le groupe veut une recette d\'au moins 2 000 €. Que cherche-t-on ?',
+      opts:[['Les prix x pour lesquels R(x) ≥ 2 000.'],['Le nombre de spectateurs N(x) ≥ 2 000.','2 000 est une recette en euros, pas un nombre de spectateurs (il y en a au plus 500).'],['La valeur de R(2 000).','2 000 n\'est pas un prix (x est entre 0 et 25) : c\'est une valeur de R. On cherche donc des antécédents.',true]],
+      sol:'On connaît une valeur de la recette et on cherche les prix : c\'est l\'inéquation R(x) ≥ 2 000, d\'inconnue x.'},
+    {t:'mcq', q:'R(x) ≥ 2 000 ⟺ −20x² + 500x − 2 000 ≥ 0. En divisant par −20, on obtient…', opts:[['x² − 25x + 100 ≤ 0'],['x² − 25x + 100 ≥ 0','Diviser par un nombre <u>négatif</u> change le sens de l\'inégalité : ≥ devient ≤.'],['x² − 25x − 100 ≤ 0','−2 000 ÷ (−20) = +100.']], sol:'On divise par −20 &lt; 0 : le sens change. x² − 25x + 100 ≤ 0.'},
+    NEXT('x² − 25x + 100 ≤ 0','x','le prix qui donne la recette maximale',null),
+    {t:'num', q:'Calcule les racines de x² − 25x + 100.', f:[{l:'x₁ =',a:5},{l:'x₂ =',a:20}], any:true, hint:'Δ = 625 − 400 = 225.', err:ERR_ROOTS, sol:'Δ = 225, √Δ = 15 : x₁ = (25 − 15) / 2 = 5 et x₂ = (25 + 15) / 2 = 20.'},
+    {t:'mcq', q:'Ensemble des solutions de x² − 25x + 100 ≤ 0 :', opts:[['S = [5 ; 20]'],['S = [0 ; 5] ∪ [20 ; 25]','Ici a = 1 &gt; 0 : l\'expression est <u>négative</u> entre les racines. Vérifie avec x = 10 : 100 − 250 + 100 = −50 ≤ 0.'],['S = ]5 ; 20[','« ≤ » : les racines sont incluses.']], sol:'a = 1 &gt; 0 : négatif entre les racines, S = [5 ; 20]. La recette est d\'au moins 2 000 € pour un billet entre 5 € et 20 €.'},
+    {t:'mcq', think:true, q:'Que vaut la recette pour un billet à 25 € ? Pourquoi ?', opts:[['0 €, car N(25) = 0 : plus personne ne vient.'],['625 €, car 25 × 25 = 625.','La recette est prix × <u>nombre de spectateurs</u>. Combien y a-t-il de spectateurs à 25 € ?'],['12 500 €, car 25 × 500.','500 est le nombre de spectateurs pour un billet gratuit, pas pour un billet à 25 €.']], sol:'N(25) = 500 − 500 = 0, donc R(25) = 0. Un prix trop élevé fait fuir le public : c\'est pour cela que la recette a un maximum.'}
+  ]}
+]}
+];
+render();</script></body></html>
